@@ -1,4 +1,6 @@
 const electron = require('electron')
+const testRunner = require('./test-runner')
+
 // Module to control application life.
 const app = electron.app
 // Module to create native browser window.
@@ -17,7 +19,7 @@ function createWindow () {
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
+    pathname: path.join(__dirname, 'app/index.html'),
     protocol: 'file:',
     slashes: true
   }))
@@ -54,6 +56,18 @@ app.on('activate', function () {
   if (mainWindow === null) {
     createWindow()
   }
+})
+
+app.on('run-test', function(testId) {
+  const url = "http://localhost:8080";
+  console.log("run test: " + testId);
+
+  console.log("from main.js");
+  console.log("---testRunner:");
+  console.log(testRunner);
+  console.log("url: " + url);
+
+  testRunner.runTest(url);
 })
 
 // In this file you can include the rest of your app's specific main process
